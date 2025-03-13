@@ -1,18 +1,27 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import auth from './assets/auth.webp';
 import eye from './assets/eye.svg';
 import eyeh from './assets/eyeh.svg';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 const Signup: React.FC = () => {
     const [isPasswordShown, setIsPasswordShown] = useState(false);
     const [authDetails, setAuthDetails] = useState({ name: '', email: '', password: '' });
+    const router = useRouter();
 
     const handleInput = (type: string, value: string) => {
         setAuthDetails(prev => ({ ...prev, [type]: value }));
     }
+
+    useEffect(() => {
+        let token = localStorage.getItem('hedtech');
+        if(token){
+            router.push('/');
+        }
+    }, [])
 
     return (
         <section className='w-full h-screen flex bg-[#F5F5F5] justify-center items-center font-mono'>
