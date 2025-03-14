@@ -1,5 +1,4 @@
 import React from "react";
-import './loading.css';
 
 interface SpinnerProps {
     children?: React.ReactNode;

@@ -6,6 +6,7 @@ export default function HomePage() {
   const router = useRouter();
   const logout = () => {
     localStorage.removeItem('hedtech');
+    router.push('/auth/signin');
   }
   useEffect(() => {
     const token = localStorage.getItem('hedtech');
