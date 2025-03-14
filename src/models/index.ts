@@ -1,17 +1,18 @@
-import { Schema, model } from "mongoose";
+import mongoose from "mongoose";
 
-const UserSchema = new Schema({
+const UserSchema = new mongoose.Schema({
     name: String,
     email: String,
     password: String
 });
 
-const ExpenseSchema = new Schema({
+const ExpenseSchema = new mongoose.Schema({
     title: String,
     amount: Number,
     category: String,
-    description: String
 });
 
-export const User = model("User", UserSchema);
-export const Expense = model("Expense", ExpenseSchema);
+const User = mongoose.models.User || mongoose.model("User", UserSchema);
+const Expense = mongoose.models.Expense || mongoose.model("Expense", ExpenseSchema);
+
+export { User, Expense };

@@ -6,14 +6,31 @@ import eyeh from './assets/eyeh.svg';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import useAuth from '@/hooks/useAuth';
 
 const Signin: React.FC = () => {
     const [isPasswordShown, setIsPasswordShown] = useState(false);
     const [authDetails, setAuthDetails] = useState({ email: '', password: '' });
     const router = useRouter();
+    const { signinUser } = useAuth();
 
     const handleInput = (type: string, value: string) => {
         setAuthDetails(prev => ({ ...prev, [type]: value }));
+    }
+
+    const postSignin = async () => {
+        try {
+            const response = await signinUser(authDetails.email, authDetails.password);
+            if(response.token){
+                localStorage.setItem('hedtech', response.token);
+                router.push('/');
+            } else {
+                console.log("Failed to sign in");
+            }
+        } catch (error) {
+            console.error("Error signing in:", error);
+            throw error;
+        }
     }
 
     useEffect(() => {
@@ -44,7 +61,7 @@ const Signin: React.FC = () => {
                                 <Image className='w-9 h-9 p-2 cursor-pointer' onClick={() => setIsPasswordShown(!isPasswordShown)} src={isPasswordShown ? eye : eyeh} alt="eye" />
                             </div>
                         </div>
-                        <button className='w-full h-10 rounded-md mt-3 p-2 bg-[#3A5B22] text-white font-semibold cursor-pointer active:shadow-lg active:bg-green-800 active:font-bold'>
+                        <button onClick={postSignin} className='w-full h-10 rounded-md mt-3 p-2 bg-[#3A5B22] text-white font-semibold cursor-pointer active:shadow-lg active:bg-green-800 active:font-bold'>
                             Login
                         </button>
                     </section>
@@ -55,7 +72,7 @@ const Signin: React.FC = () => {
                     </div>
                     <div className='w-full h-fit flex items-center justify-center text-xl gap-3'>
                         <p >Don't have an accoount?</p>
-                        <Link href="/signup">
+                        <Link href="/auth/signup">
                             <p className='cursor-pointer text-blue-500 font-semibold active:text-blue-600'>Sign Up</p>
                         </Link>
                     </div>

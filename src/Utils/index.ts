@@ -7,6 +7,7 @@ export const connectToDB = async () => {
     return;
   }
   try {
+    console.log(String(process.env.NEXT_PUBLIC_MONGOOSE_HOST))
     await mongoose.connect(String(process.env.NEXT_PUBLIC_MONGOOSE_HOST))
     isConnected = true;
   } catch (error) {
